@@ -28,17 +28,37 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register/user")
-    public ResponseEntity<UserEntity> egister(@Valid @RequestBody RegisterUserEntityDto registerUserDto) {
+    public ResponseEntity<UserEntityLoginResponse> registerUser(@Valid @RequestBody RegisterUserEntityDto registerUserDto) {
         registerUserDto.setRole(RoleEnum.USER);
         UserEntity registeredUser = authenticationService.signup(registerUserDto);
 
-        return ResponseEntity.ok(registeredUser);
+        // Generate JWT token
+        String jwtToken = jwtService.generateToken(registeredUser);
+
+        // Create Response Object
+        UserEntityLoginResponse response = new UserEntityLoginResponse();
+        response.setToken(jwtToken);
+        response.setExpiresAt(jwtService.getExpirationTime());
+        response.setUser(registeredUser); // Include user details
+
+        return ResponseEntity.ok(response);
     }
+
     @PostMapping("/register/architect")
-    public ResponseEntity<UserEntity> registerArchitect(@Valid @RequestBody RegisterUserEntityDto architectDto) {
+    public ResponseEntity<UserEntityLoginResponse> registerArchitect(@Valid @RequestBody RegisterUserEntityDto architectDto) {
         architectDto.setRole(RoleEnum.ARCHITECT);
         UserEntity registeredArchitect = authenticationService.signup(architectDto);
-        return ResponseEntity.ok(registeredArchitect);
+
+        // Generate JWT token
+        String jwtToken = jwtService.generateToken(registeredArchitect);
+
+        // Create Response Object
+        UserEntityLoginResponse response = new UserEntityLoginResponse();
+        response.setToken(jwtToken);
+        response.setExpiresAt(jwtService.getExpirationTime());
+        response.setUser(registeredArchitect); // Include user details
+
+        return ResponseEntity.ok(response);
     }
 
 
@@ -54,10 +74,11 @@ public class AuthenticationController {
         UserEntityLoginResponse loginResponse = new UserEntityLoginResponse();
         loginResponse.setToken(jwtToken);
         loginResponse.setExpiresAt(jwtService.getExpirationTime());
+        loginResponse.setUser(authenticatedUser); // Include user info
+
         log.info("User authenticated successfully, token generated.");
 
         return ResponseEntity.ok(loginResponse);
-
     }
 
 

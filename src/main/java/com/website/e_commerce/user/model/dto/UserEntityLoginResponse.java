@@ -1,5 +1,6 @@
 package com.website.e_commerce.user.model.dto;
 
+import com.website.e_commerce.user.model.entity.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,12 +13,15 @@ public class UserEntityLoginResponse {
 
     private String  token;
     private long expiresAt;
+    private UserEntity user;
+
 
     @Override
     public String toString() {
         return "UserEntityLoginResponse{" +
                 "token='" + token + '\'' +
                 ", expiresAt=" + expiresAt +
+                ", user=" + user +
                 '}';
     }
 
@@ -38,7 +42,13 @@ public class UserEntityLoginResponse {
         result = 31 * result + (int) (expiresAt ^ (expiresAt >>> 32));
         return result;
     }
+    public UserEntity getUser() {
+        return user;
+    }
 
+    public void setUser(UserEntity user) {
+        this.user = user;
+    }
     public String getToken() {
         return token;
     }
