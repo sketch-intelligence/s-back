@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Collections;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.*;
@@ -47,7 +48,7 @@ public class PostController {
             Page<PostDto> postDtos = postService.getAllPosts(pageable);
 
             if (postDtos.isEmpty()) {
-                return ResponseEntity.status(NO_CONTENT).body(new ApiResponse("No posts available", postDtos));
+                return ResponseEntity.status(OK).body(new ApiResponse("No posts available", Collections.emptyList()));
             }
 
             return ResponseEntity.status(OK).body(new ApiResponse("Fetched successfully", postDtos));

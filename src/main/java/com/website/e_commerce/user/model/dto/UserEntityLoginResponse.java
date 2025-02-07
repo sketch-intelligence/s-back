@@ -8,20 +8,47 @@ import lombok.NoArgsConstructor;
 
 import java.util.Objects;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 public class UserEntityLoginResponse {
+    private String message;
+    private Map<String, Object> data;
 
-    private String  token;
-    private long expiresAt;
-    private UserEntity user;
+    public UserEntityLoginResponse() {
+        this.data = new HashMap<>();
+    }
 
+    public UserEntityLoginResponse(String message, String token, long expiresAt, UserEntity user) {
+        this.message = message;
+        this.data = new HashMap<>();
+        this.data.put("token", token);
+        this.data.put("expiresAt", expiresAt);
+        this.data.put("user", user);
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public Map<String, Object> getData() {
+        return data;
+    }
+
+    public void setData(Map<String, Object> data) {
+        this.data = data;
+    }
 
     @Override
     public String toString() {
         return "UserEntityLoginResponse{" +
-                "token='" + token + '\'' +
-                ", expiresAt=" + expiresAt +
-                ", user=" + user +
+                "message='" + message + '\'' +
+                ", data=" + data +
                 '}';
     }
 
@@ -29,47 +56,13 @@ public class UserEntityLoginResponse {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         UserEntityLoginResponse that = (UserEntityLoginResponse) o;
-
-        if (expiresAt != that.expiresAt) return false;
-        return Objects.equals(token, that.token);
+        return Objects.equals(message, that.message) &&
+                Objects.equals(data, that.data);
     }
 
     @Override
     public int hashCode() {
-        int result = token != null ? token.hashCode() : 0;
-        result = 31 * result + (int) (expiresAt ^ (expiresAt >>> 32));
-        return result;
-    }
-    public UserEntity getUser() {
-        return user;
-    }
-
-    public void setUser(UserEntity user) {
-        this.user = user;
-    }
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    public long getExpiresAt() {
-        return expiresAt;
-    }
-
-    public void setExpiresAt(long expiresAt) {
-        this.expiresAt = expiresAt;
-    }
-
-    public UserEntityLoginResponse() {
-    }
-
-    public UserEntityLoginResponse(String token, long expiresAt) {
-        this.token = token;
-        this.expiresAt = expiresAt;
+        return Objects.hash(message, data);
     }
 }

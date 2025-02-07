@@ -32,14 +32,14 @@ public class AuthenticationController {
         registerUserDto.setRole(RoleEnum.USER);
         UserEntity registeredUser = authenticationService.signup(registerUserDto);
 
-        // Generate JWT token
         String jwtToken = jwtService.generateToken(registeredUser);
 
-        // Create Response Object
-        UserEntityLoginResponse response = new UserEntityLoginResponse();
-        response.setToken(jwtToken);
-        response.setExpiresAt(jwtService.getExpirationTime());
-        response.setUser(registeredUser); // Include user details
+        UserEntityLoginResponse response = new UserEntityLoginResponse(
+                "User registered successfully",
+                jwtToken,
+                jwtService.getExpirationTime(),
+                registeredUser
+        );
 
         return ResponseEntity.ok(response);
     }
@@ -49,36 +49,37 @@ public class AuthenticationController {
         architectDto.setRole(RoleEnum.ARCHITECT);
         UserEntity registeredArchitect = authenticationService.signup(architectDto);
 
-        // Generate JWT token
         String jwtToken = jwtService.generateToken(registeredArchitect);
 
-        // Create Response Object
-        UserEntityLoginResponse response = new UserEntityLoginResponse();
-        response.setToken(jwtToken);
-        response.setExpiresAt(jwtService.getExpirationTime());
-        response.setUser(registeredArchitect); // Include user details
+        UserEntityLoginResponse response = new UserEntityLoginResponse(
+                "Architect registered successfully",
+                jwtToken,
+                jwtService.getExpirationTime(),
+                registeredArchitect
+        );
 
         return ResponseEntity.ok(response);
     }
 
 
+
     @PostMapping("/authenticate")
     public ResponseEntity<UserEntityLoginResponse> authenticate(@RequestBody LoginUserEntityDto loginUserDto) {
-
         log.info("POST /auth/login endpoint hit with payload: {}", loginUserDto);
 
         UserEntity authenticatedUser = authenticationService.authenticate(loginUserDto);
-
         String jwtToken = jwtService.generateToken(authenticatedUser);
 
-        UserEntityLoginResponse loginResponse = new UserEntityLoginResponse();
-        loginResponse.setToken(jwtToken);
-        loginResponse.setExpiresAt(jwtService.getExpirationTime());
-        loginResponse.setUser(authenticatedUser); // Include user info
+        UserEntityLoginResponse response = new UserEntityLoginResponse(
+                "User authenticated successfully",
+                jwtToken,
+                jwtService.getExpirationTime(),
+                authenticatedUser
+        );
 
         log.info("User authenticated successfully, token generated.");
 
-        return ResponseEntity.ok(loginResponse);
+        return ResponseEntity.ok(response);
     }
 
 
