@@ -2,6 +2,7 @@ package com.website.e_commerce.userproject;
 
 import com.website.e_commerce.portfolioproject.image.ProjectImageDto;
 import com.website.e_commerce.user.model.dto.UserEntityDto;
+import com.website.e_commerce.bid.BidDto;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -15,6 +16,20 @@ public class UserProjectDto {
    private List<ProjectImageDto> projectImage;
    private BigDecimal budget;
    private Long deadLine;
+
+//   editing bids
+private List<BidDto> bidDtos;
+
+    public List<BidDto> getBidDtos() {
+        return bidDtos;
+    }
+
+    public void setBidDtos(List<BidDto> bidDtos) {
+        this.bidDtos = bidDtos;
+    }
+
+
+
 
     @Override
     public String toString() {

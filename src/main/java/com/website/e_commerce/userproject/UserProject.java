@@ -3,7 +3,7 @@ package com.website.e_commerce.userproject;
 import com.website.e_commerce.portfolioproject.image.ProjectImage;
 import com.website.e_commerce.user.model.entity.UserEntity;
 import jakarta.persistence.*;
-
+import com.website.e_commerce.bid.Bid;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
@@ -21,6 +21,19 @@ public class UserProject {
     private String description;
     @OneToMany
     private List<ProjectImage> projectImage;
+
+    @OneToMany(mappedBy = "userProject", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Bid> bids;
+
+//    editing bids
+    public List<Bid> getBids() {
+        return bids;
+    }
+
+    public void setBids(List<Bid> bids) {
+        this.bids = bids;
+    }
+
 
     private BigDecimal budget = BigDecimal.ZERO;
 
