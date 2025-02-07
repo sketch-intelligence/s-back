@@ -14,6 +14,10 @@ public class PostDto {
     Long id;
     String text;
     LocalDateTime timeStamp;
+
+
+
+
     private List<PostImageDto> images;
 
     private List<CommentDto> comments;
@@ -70,6 +74,16 @@ public class PostDto {
         return result;
     }
 
+    private Long ownerId;
+
+    public Long getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(Long ownerId) {
+        this.ownerId = ownerId;
+    }
+
     public Long getId() {
         return id;
     }
@@ -117,4 +131,7 @@ public class PostDto {
     public void setReactions(List<ReactionDto> reactions) {
         this.reactions = reactions;
     }
+
+
+
 }

@@ -3,6 +3,9 @@ package com.website.e_commerce.post;
 import com.website.e_commerce.exception.ResourceNotFoundException;
 import com.website.e_commerce.mapper.PostMapper;
 import com.website.e_commerce.postimage.PostImageService;
+import com.website.e_commerce.user.model.entity.UserEntity;
+import com.website.e_commerce.user.repository.CustomerEntityRepository;
+import com.website.e_commerce.security.service.AuthenticationService;
 import com.website.e_commerce.postimage.PostImageDto;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
@@ -18,10 +21,11 @@ import java.util.List;
 public class PostService implements IPostService{
     private final PostRepository postRepository;
     private final PostImageService imageService;
-
-    public PostService(PostRepository postRepository,@Lazy PostImageService imageService) {
+    private final CustomerEntityRepository customerEntityRepository;
+    public PostService(PostRepository postRepository,@Lazy PostImageService imageService, CustomerEntityRepository customerEntityRepository) {
         this.postRepository = postRepository;
         this.imageService = imageService;
+        this.customerEntityRepository = customerEntityRepository;
     }
 
     @Override
@@ -30,6 +34,37 @@ public class PostService implements IPostService{
                 .findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("post not found"));
     }
+
+
+    @Override
+    public PostDto addPost(PostDto postDto) {
+        // Validate that ownerId is provided
+        if (postDto.getOwnerId() == null) {
+            throw new IllegalArgumentException("Owner ID cannot be null");
+        }
+
+        // Fetch the user from the database using the instance of customerEntityRepository
+        UserEntity owner = customerEntityRepository.findById(postDto.getOwnerId())
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+        // Create the post entity
+        Post post = new Post();
+        post.setText(postDto.getText());
+        post.setTimeStamp(LocalDateTime.now());
+        post.setOwner(owner); // Assign the owner
+
+        // Save post to the repository
+        Post savedPost = postRepository.save(post);
+
+        // Convert saved post to DTO and return
+        PostDto savedPostDto = PostMapper.M.toDto(savedPost);
+        savedPostDto.setOwnerId(owner.getId()); // Ensure ownerId is returned
+
+        return savedPostDto;
+    }
+
+
+
 
     @Override
     public PostDto getPostDtoById(Long id) {
@@ -42,22 +77,6 @@ public class PostService implements IPostService{
     public Page<PostDto> getAllPosts(Pageable pageable) {
         return postRepository.findAll(pageable)
                 .map(post -> PostMapper.M.toDto(post));
-
-    }
-
-    @Override
-    public PostDto addPost(PostDto postDto) {
-        // Create the post entity
-        Post post = new Post();
-        post.setText(postDto.getText());
-        post.setTimeStamp(LocalDateTime.now());
-
-        // Save post to the repository
-        Post savedPost = postRepository.save(post);
-
-        // Map saved data back to PostDto
-
-        return PostMapper.M.toDto(savedPost);
     }
 
 

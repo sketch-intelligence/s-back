@@ -62,24 +62,17 @@ public class PostController {
 
 
 
-    @PostMapping(value = "/add")
-    public ResponseEntity<ApiResponse> addPost(
-            @RequestBody
-            PostDto postDto) {
+    @PostMapping("/add")
+    public ResponseEntity<ApiResponse> addPost(@RequestBody PostDto postDto) {
         try {
-
             PostDto createdPost = postService.addPost(postDto);
-            return ResponseEntity.status(OK).body(new ApiResponse("post created", createdPost));
-
-
+            return ResponseEntity.status(OK).body(new ApiResponse("Post created", createdPost));
         } catch (Exception e) {
-
-            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(), INTERNAL_SERVER_ERROR));
-
+            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(), null));
         }
-
-
     }
+
+
 
     @DeleteMapping("post/delete")
     public ResponseEntity<ApiResponse> deletePostById(Long postId){

@@ -22,6 +22,21 @@ public class Post {
     private Long id;
     private String text;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+
+    private UserEntity owner;
+
+    public UserEntity getOwner() {
+        return owner;
+    }
+
+    public void setOwner(UserEntity owner) {
+        this.owner = owner;
+    }
+
+
+
     @CreationTimestamp
     @Column(updatable = false, name = "timestamp") // Ensures it won't change after creation
     private LocalDateTime timeStamp;

@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,6 +48,14 @@ public class UserEntityController {
      *
      * @return a {@link ResponseEntity} containing the list of all customer entities
      */
+    @GetMapping("/{userId}")
+    public ResponseEntity<UserEntity> getUserById(@PathVariable Long userId) {
+        UserEntity user = userEntityService.getUserById(userId);
+        return ResponseEntity.ok(user);
+    }
+
+
+
     @GetMapping("all")
     public ResponseEntity<List<UserEntity>>allUsers(){
         List<UserEntity> customerUser = userEntityService.allUsers();

@@ -29,4 +29,9 @@ public class UserEntityService {
 
         return customerEntityRepository.findByEmail(email).orElseThrow(()-> new UsernameNotFoundException("user not found"));
     }
+    public UserEntity getUserById(Long userId) {
+        return customerEntityRepository.findById(userId)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    }
+
 }
