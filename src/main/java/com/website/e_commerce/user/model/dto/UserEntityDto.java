@@ -3,8 +3,8 @@ package com.website.e_commerce.user.model.dto;
 import java.util.Objects;
 
 public class UserEntityDto {
-    private Long id ;
-    private String name;
+    private Long id;
+    private String name; // Keep the existing field name
 
     @Override
     public String toString() {
@@ -40,7 +40,7 @@ public class UserEntityDto {
         this.id = id;
     }
 
-    public String getName() {
+    public String getName() { // Keep method name consistent
         return name;
     }
 
@@ -51,6 +51,7 @@ public class UserEntityDto {
     public UserEntityDto() {
     }
 
+    // ✅ Fix: Ensure this constructor matches what PostService expects
     public UserEntityDto(Long id, String name) {
         this.id = id;
         this.name = name;

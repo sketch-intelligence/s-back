@@ -5,6 +5,7 @@ import com.website.e_commerce.mapper.PostMapper;
 import com.website.e_commerce.postimage.PostImageService;
 import com.website.e_commerce.user.model.entity.UserEntity;
 import com.website.e_commerce.user.repository.CustomerEntityRepository;
+import com.website.e_commerce.user.model.dto.UserEntityDto;
 import com.website.e_commerce.security.service.AuthenticationService;
 import com.website.e_commerce.postimage.PostImageDto;
 import org.springframework.context.annotation.Lazy;
@@ -76,8 +77,18 @@ public class PostService implements IPostService{
     @Override
     public Page<PostDto> getAllPosts(Pageable pageable) {
         return postRepository.findAll(pageable)
-                .map(post -> PostMapper.M.toDto(post));
+                .map(post -> {
+                    PostDto postDto = PostMapper.M.toDto(post);
+                    if (post.getOwner() != null) {
+                        postDto.setOwner(new UserEntityDto(
+                                post.getOwner().getId(),
+                                post.getOwner().getName() // Use 'name' instead of 'username'
+                        ));
+                    }
+                    return postDto;
+                });
     }
+
 
 
 

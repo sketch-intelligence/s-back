@@ -3,6 +3,7 @@ package com.website.e_commerce.post;
 import com.website.e_commerce.comment.CommentDto;
 import com.website.e_commerce.postimage.PostImageDto;
 import com.website.e_commerce.reactions.ReactionDto;
+import com.website.e_commerce.user.model.dto.UserEntityDto;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -83,7 +84,16 @@ public class PostDto {
     public void setOwnerId(Long ownerId) {
         this.ownerId = ownerId;
     }
+    private UserEntityDto owner; // Change from Long ownerId to UserEntityDto
 
+    // Getter & Setter
+    public UserEntityDto getOwner() {
+        return owner;
+    }
+
+    public void setOwner(UserEntityDto owner) {
+        this.owner = owner;
+    }
     public Long getId() {
         return id;
     }

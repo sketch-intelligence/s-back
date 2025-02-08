@@ -13,6 +13,7 @@ public interface PostMapper {
 
     @Mapping(source = "images", target = "postImages")
     @Mapping(source = "reactions", target = "reactions")
+    @Mapping(source = "owner", target = "owner")
     Post toEntity(PostDto postDto);
 
     List<Post> toEntity(List<PostDto> postDto);
