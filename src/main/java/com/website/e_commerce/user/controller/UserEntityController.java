@@ -2,6 +2,7 @@ package com.website.e_commerce.user.controller;
 
 import com.website.e_commerce.user.model.entity.UserEntity;
 import com.website.e_commerce.user.service.UserEntityService;
+import com.website.e_commerce.userproject.UserProjectDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -54,7 +55,11 @@ public class UserEntityController {
         return ResponseEntity.ok(user);
     }
 
-
+    @GetMapping("/{userId}/projects")
+    public ResponseEntity<List<UserProjectDto>> getUserProjects(@PathVariable Long userId) {
+        List<UserProjectDto> projects = userEntityService.getUserProjects(userId);
+        return ResponseEntity.ok(projects);
+    }
 
     @GetMapping("all")
     public ResponseEntity<List<UserEntity>>allUsers(){

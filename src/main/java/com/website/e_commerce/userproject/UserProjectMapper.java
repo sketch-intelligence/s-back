@@ -7,23 +7,25 @@ import com.website.e_commerce.bid.Bid;
 import com.website.e_commerce.bid.BidDto;
 import java.util.List;
 
-@Mapper
+@Mapper(componentModel = "spring")  // ✅ Enable Spring Bean detection
 public interface UserProjectMapper {
-    UserProjectMapper M = Mappers.getMapper(UserProjectMapper.class);
 
-    @Mapping(target = "architect.id",source = "architectId")
+    @Mapping(target = "architect.id", source = "architectId")
     @Mapping(target = "bids", source = "bidDtos")
     UserProject toEntity(UserProjectDto userProjectDto);
 
     List<UserProject> toEntity(List<UserProjectDto> userProjectDto);
-    @Mapping(target = "architectId",source = "architect.id")
+
+    @Mapping(target = "architectId", source = "architect.id")
     @Mapping(target = "bidDtos", source = "bids")
     UserProjectDto toDto(UserProject userProject);
 
     List<UserProjectDto> toDto(List<UserProject> userProject);
 
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)UserProject partialUpdate(UserProjectDto userProjectDto, @MappingTarget UserProject userProject);
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    UserProject partialUpdate(UserProjectDto userProjectDto, @MappingTarget UserProject userProject);
 
     List<BidDto> mapBidsToBidDtos(List<Bid> bids);
     List<Bid> mapBidDtosToBids(List<BidDto> bidDtos);
 }
+

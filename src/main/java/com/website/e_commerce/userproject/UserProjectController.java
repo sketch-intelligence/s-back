@@ -1,6 +1,7 @@
 package com.website.e_commerce.userproject;
 
 import com.website.e_commerce.response.ApiResponse;
+import com.website.e_commerce.user.service.UserEntityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -85,4 +86,5 @@ public class UserProjectController {
                     .body(new ApiResponse("An unexpected error occurred", null));
         }
     }
+
 }

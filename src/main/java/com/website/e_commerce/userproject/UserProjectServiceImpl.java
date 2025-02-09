@@ -23,8 +23,12 @@ public class UserProjectServiceImpl implements IUserProjectService {
 
     @Autowired
     private UserProjectRepository userProjectRepository;
+
     @Autowired
     private UserEntityRepository userEntityRepository;
+
+    @Autowired  // ✅ Inject the mapper properly
+    private UserProjectMapper userProjectMapper;
 
     @Override
     @PreAuthorize("hasRole('ROLE_USER')")
@@ -32,39 +36,38 @@ public class UserProjectServiceImpl implements IUserProjectService {
         // Fetch architect entity using the architectId from the DTO
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         UserEntity userEntity = (UserEntity) auth.getPrincipal();
-        log.info("auth:{}",auth);
-        // Set the architect in the UserProject entity
-        UserProject userProject = UserProjectMapper.M.toEntity(userProjectDto);
+
+        log.info("auth:{}", auth);
+
+        // Use the injected mapper instead of UserProjectMapper.M
+        UserProject userProject = userProjectMapper.toEntity(userProjectDto);
         userProject.setArchitect(userEntity);
 
-        // Save the project to the repository
+        // Save and return the DTO
         userProject = userProjectRepository.save(userProject);
-
-        // Return the saved project as DTO
-        return UserProjectMapper.M.toDto(userProject);
+        return userProjectMapper.toDto(userProject);
     }
-
-
 
     @Override
     public UserProjectDto getUserProjectById(Long id) {
         Optional<UserProject> userProject = userProjectRepository.findById(id);
-        return userProject.map(UserProjectMapper.M::toDto)
+        return userProject.map(userProjectMapper::toDto)
                 .orElseThrow(() -> new RuntimeException("UserProject not found"));
     }
 
     @Override
     public List<UserProjectDto> getAllUserProjects() {
-        return UserProjectMapper.M.toDto(userProjectRepository.findAll());
+        return userProjectMapper.toDto(userProjectRepository.findAll());
     }
 
     @Override
     public UserProjectDto updateUserProject(Long id, UserProjectDto userProjectDto) {
         UserProject userProject = userProjectRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("UserProject not found"));
-        UserProjectMapper.M.partialUpdate(userProjectDto, userProject);
+
+        userProjectMapper.partialUpdate(userProjectDto, userProject);
         userProject = userProjectRepository.save(userProject);
-        return UserProjectMapper.M.toDto(userProject);
+        return userProjectMapper.toDto(userProject);
     }
 
     @Override
@@ -75,3 +78,5 @@ public class UserProjectServiceImpl implements IUserProjectService {
         userProjectRepository.deleteById(id);
     }
 }
+
+
