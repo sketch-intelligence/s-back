@@ -103,7 +103,22 @@ public class PostController {
 
     }
 
+
+    @GetMapping("user/{userId}/posts")
+    public ResponseEntity<ApiResponse> getPostsByUser(@PathVariable Long userId) {
+        try {
+            List<PostDto> posts = postService.getPostsByUserId(userId);
+            if (posts.isEmpty()) {
+                return ResponseEntity.status(OK).body(new ApiResponse("No posts found for this user", Collections.emptyList()));
+            }
+            return ResponseEntity.status(OK).body(new ApiResponse("Fetched successfully", posts));
+        } catch (Exception e) {
+            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(), null));
+        }
     }
+
+
+}
 
 
 

@@ -89,6 +89,13 @@ public class PostService implements IPostService{
                 });
     }
 
+    @Override
+    public List<PostDto> getPostsByUserId(Long userId) {
+        List<Post> posts = postRepository.findAllByUserId(userId);
+        return posts.stream().map(PostMapper.M::toDto).toList();
+    }
+
+
 
 
 
