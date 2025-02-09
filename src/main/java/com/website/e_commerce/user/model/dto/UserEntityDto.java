@@ -1,10 +1,19 @@
 package com.website.e_commerce.user.model.dto;
 
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
 import java.util.Objects;
 
 public class UserEntityDto {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String name; // Keep the existing field name
+    private String name;
+    private String imageUrl;
+
+
 
     @Override
     public String toString() {
@@ -52,8 +61,16 @@ public class UserEntityDto {
     }
 
     // ✅ Fix: Ensure this constructor matches what PostService expects
-    public UserEntityDto(Long id, String name) {
+    public UserEntityDto(Long id, String name, String imageUrl) {
         this.id = id;
         this.name = name;
+        this.imageUrl = imageUrl;
+    }
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

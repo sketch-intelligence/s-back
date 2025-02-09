@@ -17,8 +17,9 @@ public class ProfileImage {
     @Lob
     private Blob image;
     private String downloadUrl;
-    @OneToOne(mappedBy = "profileImage")
-    @JoinColumn(name = "user_id")
+
+    @OneToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false, unique = true)
     private UserEntity user;
 
 

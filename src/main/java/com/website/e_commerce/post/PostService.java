@@ -82,12 +82,14 @@ public class PostService implements IPostService{
                     if (post.getOwner() != null) {
                         postDto.setOwner(new UserEntityDto(
                                 post.getOwner().getId(),
-                                post.getOwner().getName() // Use 'name' instead of 'username'
+                                post.getOwner().getName(),
+                                post.getOwner().getImageUrl() // Assuming the owner entity has an image URL
                         ));
                     }
                     return postDto;
                 });
     }
+
 
 
 

@@ -68,10 +68,27 @@ import java.util.*;
 @Table(name = "user")
 @Builder
 public class UserEntity implements UserDetails {
+    public ProfileImage getProfileImage() {
+        return profileImage;
+    }
+
+    public void setProfileImage(ProfileImage profileImage) {
+        this.profileImage = profileImage;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private Long id;
+    private String imageUrl; // Ensure this exists
 
     @Column(name = "name" , nullable = false )
     @NotBlank(message = "name is a mandatory")
@@ -85,8 +102,9 @@ public class UserEntity implements UserDetails {
     private String password;
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<RoleEntity> roles = new HashSet<>();
-    @OneToOne
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private ProfileImage profileImage;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles.stream()
@@ -127,12 +145,13 @@ public class UserEntity implements UserDetails {
     public UserEntity() {
     }
 
-    public UserEntity(Long id, String name, String email, String password, Set<RoleEntity> roles) {
+    public UserEntity(Long id, String name, String email, String password, Set<RoleEntity> roles,ProfileImage pi) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
         this.roles = roles;
+        this.profileImage=pi;
     }
 
     public Long getId() {
