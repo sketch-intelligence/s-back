@@ -3,6 +3,7 @@ package com.website.e_commerce.user.controller;
 import com.website.e_commerce.user.model.entity.UserEntity;
 import com.website.e_commerce.user.service.UserEntityService;
 import com.website.e_commerce.userproject.UserProjectDto;
+import com.website.e_commerce.user.model.dto.UserEntityDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -11,6 +12,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+
 
 import java.util.List;
 /**
@@ -49,11 +53,20 @@ public class UserEntityController {
      *
      * @return a {@link ResponseEntity} containing the list of all customer entities
      */
-    @GetMapping("/{userId}")
-    public ResponseEntity<UserEntity> getUserById(@PathVariable Long userId) {
-        UserEntity user = userEntityService.getUserById(userId);
-        return ResponseEntity.ok(user);
+    @RestController
+    @RequestMapping("/users")
+    public class UserController {
+
+        @Autowired
+        private UserEntityService userEntityService;
+
+        @GetMapping("/{userId}")
+        public ResponseEntity<UserEntityDto> getUserById(@PathVariable Long userId) {
+            UserEntityDto userDTO = userEntityService.getUserById(userId);
+            return ResponseEntity.ok(userDTO);
+        }
     }
+
 
     @GetMapping("/{userId}/projects")
     public ResponseEntity<List<UserProjectDto>> getUserProjects(@PathVariable Long userId) {
