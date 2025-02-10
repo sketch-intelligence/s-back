@@ -5,12 +5,14 @@ import com.website.e_commerce.user.repository.CustomerEntityRepository;
 import com.website.e_commerce.userproject.UserProject;
 import com.website.e_commerce.userproject.UserProjectDto;
 import com.website.e_commerce.user.model.dto.UserEntityDto;
+import com.website.e_commerce.user.model.entity.Follower;
 import com.website.e_commerce.user.repository.FollowerRepository;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import com.website.e_commerce.userproject.UserProjectRepository;
 import com.website.e_commerce.userproject.UserProjectMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
+import java.util.stream.Collectors;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,10 +28,13 @@ public class UserEntityService {
     private CustomerEntityRepository customerEntityRepository;
     private final UserProjectRepository userProjectRepository;
 
-    public UserEntityService(CustomerEntityRepository customerEntityRepository,UserProjectRepository userProjectRepository) {
+    private final FollowerRepository followerRepository;
+
+
+    public UserEntityService(CustomerEntityRepository customerEntityRepository,UserProjectRepository userProjectRepository,FollowerRepository followerRepository) {
         this.customerEntityRepository = customerEntityRepository;
         this.userProjectRepository = userProjectRepository;
-
+        this.followerRepository = followerRepository;
     }
 
 
@@ -52,17 +57,28 @@ public class UserEntityService {
         return customerEntityRepository.findByEmail(email).orElseThrow(()-> new UsernameNotFoundException("user not found"));
     }
     public UserEntityDto getUserById(Long userId) {
-        UserEntity user = customerEntityRepository.findById(userId)  // ✅ Call it on the instance
+        UserEntity user = customerEntityRepository.findById(userId)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-        // Return the user as a DTO
-        return new UserEntityDto(
-                user.getId(),
-                user.getUsername(),
-                user.getImageUrl(),
-                List.of(),  // Placeholder for followers
-                List.of()   // Placeholder for following
-        );
+        // Debug followers
+        List<Follower> followersList = followerRepository.findByFollowing(user);
+        System.out.println("Followers found: " + followersList.size());
+
+        // Debug following
+        List<Follower> followingList = followerRepository.findByFollower(user);
+        System.out.println("Following found: " + followingList.size());
+
+        // Mapping
+        List<Long> followers = followersList.stream()
+                .map(f -> f.getFollower().getId())
+                .collect(Collectors.toList());
+
+        List<Long> following = followingList.stream()
+                .map(f -> f.getFollowing().getId())
+                .collect(Collectors.toList());
+
+        return new UserEntityDto(user.getId(), user.getUsername(), user.getImageUrl(), followers, following);
     }
+
 
 }
