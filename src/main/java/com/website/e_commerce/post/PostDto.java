@@ -22,7 +22,9 @@ public class PostDto {
     private List<CommentDto> comments;
 
     private List<ReactionDto> reactions;
-    private List<String> imageFiles;
+
+    private List<String> imageUrls;
+
     public PostDto(Long id, String text, LocalDateTime timeStamp, List<PostImageDto> images, List<CommentDto> comments, List<ReactionDto> reactions) {
         this.id = id;
         this.text = text;
@@ -33,11 +35,11 @@ public class PostDto {
     }
 
     public List<String> getImageUrls() {
-        return imageFiles;
+        return imageUrls;
     }
 
     public void setImageFiles(List<String> imageFiles) {
-        this.imageFiles = imageFiles;
+        this.imageUrls = imageFiles;
     }
     public PostDto() {
     }
