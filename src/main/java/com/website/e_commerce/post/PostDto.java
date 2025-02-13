@@ -4,6 +4,8 @@ import com.website.e_commerce.comment.CommentDto;
 import com.website.e_commerce.postimage.PostImageDto;
 import com.website.e_commerce.reactions.ReactionDto;
 import com.website.e_commerce.user.model.dto.UserEntityDto;
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -15,16 +17,12 @@ public class PostDto {
     Long id;
     String text;
     LocalDateTime timeStamp;
-
-
-
-
     private List<PostImageDto> images;
 
     private List<CommentDto> comments;
 
     private List<ReactionDto> reactions;
-
+    private List<String> imageFiles;
     public PostDto(Long id, String text, LocalDateTime timeStamp, List<PostImageDto> images, List<CommentDto> comments, List<ReactionDto> reactions) {
         this.id = id;
         this.text = text;
@@ -34,6 +32,13 @@ public class PostDto {
         this.reactions = reactions;
     }
 
+    public List<String> getImageUrls() {
+        return imageFiles;
+    }
+
+    public void setImageFiles(List<String> imageFiles) {
+        this.imageFiles = imageFiles;
+    }
     public PostDto() {
     }
 

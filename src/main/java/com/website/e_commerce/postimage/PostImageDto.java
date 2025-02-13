@@ -1,14 +1,14 @@
 package com.website.e_commerce.postimage;
 
 import lombok.Data;
-
+import java.util.List;
 import java.util.Objects;
 
 public class PostImageDto {
     private Long id;
     private String fileName;
     private String downloadUrl;
-
+    private List<String> imageUrls;
     public PostImageDto(Long id, String fileName, String downloadUrl) {
         this.id = id;
         this.fileName = fileName;
