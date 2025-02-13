@@ -2,12 +2,11 @@ package com.website.e_commerce.userproject;
 
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
-
 import com.website.e_commerce.bid.Bid;
 import com.website.e_commerce.bid.BidDto;
 import java.util.List;
 
-@Mapper(componentModel = "spring")  // ✅ Enable Spring Bean detection
+@Mapper(componentModel = "spring")
 public interface UserProjectMapper {
 
     @Mapping(target = "architect.id", source = "architectId")
@@ -17,6 +16,7 @@ public interface UserProjectMapper {
     List<UserProject> toEntity(List<UserProjectDto> userProjectDto);
 
     @Mapping(target = "architectId", source = "architect.id")
+    @Mapping(target = "userName", source = "architect.name") // Explicitly map the userName
     @Mapping(target = "bidDtos", source = "bids")
     UserProjectDto toDto(UserProject userProject);
 
@@ -28,4 +28,3 @@ public interface UserProjectMapper {
     List<BidDto> mapBidsToBidDtos(List<Bid> bids);
     List<Bid> mapBidDtosToBids(List<BidDto> bidDtos);
 }
-

@@ -18,7 +18,17 @@ public class UserProjectDto {
    private Long architectId;
    private String title;
    private String description;
-   private List<ProjectImageDto> projectImage;
+    private String userName; // Make sure this is present in your DTO
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    private List<ProjectImageDto> projectImage;
    private BigDecimal budget;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate deadLine;
@@ -135,7 +145,7 @@ private List<BidDto> bidDtos;
     }
 
 
-    public UserProjectDto(Long id, Long architectId, String title, String description, List<ProjectImageDto> projectImage, BigDecimal budget, LocalDate deadLine) {
+    public UserProjectDto(Long id, Long architectId, String title, String description, List<ProjectImageDto> projectImage, BigDecimal budget, LocalDate deadLine, String user) {
         this.id = id;
         this.architectId = architectId;
         this.title = title;
@@ -143,6 +153,7 @@ private List<BidDto> bidDtos;
         this.projectImage = projectImage;
         this.budget = budget;
         this.deadLine = deadLine;
+        this.userName = user;
     }
 
     public UserProjectDto() {
