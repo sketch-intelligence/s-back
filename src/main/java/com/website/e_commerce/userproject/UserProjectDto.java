@@ -3,6 +3,11 @@ package com.website.e_commerce.userproject;
 import com.website.e_commerce.portfolioproject.image.ProjectImageDto;
 import com.website.e_commerce.user.model.dto.UserEntityDto;
 import com.website.e_commerce.bid.BidDto;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import java.time.LocalDate;
+
+
+
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -15,7 +20,8 @@ public class UserProjectDto {
    private String description;
    private List<ProjectImageDto> projectImage;
    private BigDecimal budget;
-   private Long deadLine;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDate deadLine;
 
 //   editing bids
 private List<BidDto> bidDtos;
@@ -35,7 +41,7 @@ private List<BidDto> bidDtos;
     public String toString() {
         return "UserProjectDto{" +
                 "id=" + id +
-                ", architectId=" + architectId +
+                ", userId=" + architectId +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", projectImage=" + projectImage +
@@ -120,15 +126,16 @@ private List<BidDto> bidDtos;
         this.budget = budget;
     }
 
-    public Long getDeadLine() {
+    public LocalDate getDeadLine() {
         return deadLine;
     }
 
-    public void setDeadLine(Long deadLine) {
+    public void setDeadLine(LocalDate deadLine) {
         this.deadLine = deadLine;
     }
 
-    public UserProjectDto(Long id, Long architectId, String title, String description, List<ProjectImageDto> projectImage, BigDecimal budget, Long deadLine) {
+
+    public UserProjectDto(Long id, Long architectId, String title, String description, List<ProjectImageDto> projectImage, BigDecimal budget, LocalDate deadLine) {
         this.id = id;
         this.architectId = architectId;
         this.title = title;

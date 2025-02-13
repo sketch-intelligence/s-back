@@ -7,7 +7,7 @@ import com.website.e_commerce.bid.Bid;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
-
+import java.time.LocalDate;
 @Entity
 public class UserProject {
     @Id
@@ -37,13 +37,18 @@ public class UserProject {
 
     private BigDecimal budget = BigDecimal.ZERO;
 
-    private Long deadLine;
+
+    @Column(name = "dead_line")
+    private LocalDate deadLine;
+
+
+
 
     @Override
     public String toString() {
         return "UserProject{" +
                 "id=" + id +
-                ", architect=" + architect +
+                ", user=" + architect +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", projectImage=" + projectImage +
@@ -120,18 +125,18 @@ public class UserProject {
         this.budget = budget;
     }
 
-    public Long getDeadLine() {
+    public LocalDate getDeadLine() {
         return deadLine;
     }
 
-    public void setDeadLine(Long deadLine) {
+    public void setDeadLine(LocalDate deadLine) {
         this.deadLine = deadLine;
     }
 
     public UserProject() {
     }
 
-    public UserProject(Long id, UserEntity architect, String title, String description, List<ProjectImage> projectImage, BigDecimal budget, Long deadLine) {
+    public UserProject(Long id, UserEntity architect, String title, String description, List<ProjectImage> projectImage, BigDecimal budget, LocalDate deadLine) {
         this.id = id;
         this.architect = architect;
         this.title = title;
