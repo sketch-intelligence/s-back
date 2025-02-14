@@ -46,9 +46,17 @@ public class PortfolioProjectService {
 
     public PortfolioProjectDto createProject(PortfolioProjectDto request) {
         PortfolioProject project = PortfolioProjectMapper.M.toEntity(request);
+
+        // Ensure project images are not null before processing
+        if (project.getProjectImage() == null) {
+            project.setProjectImage(List.of()); // Set an empty list instead of null
+        }
+
         PortfolioProject savedProject = portfolioProjectRepository.save(project);
         return PortfolioProjectMapper.M.toDto(savedProject);
     }
+
+
 
     public void deletePortfolioProjectById(Long projectId) {
         portfolioProjectRepository.findById(projectId)

@@ -2,7 +2,7 @@ package com.website.e_commerce.portfolioproject;
 
 import com.website.e_commerce.portfolioproject.image.ProjectImageDto;
 import com.website.e_commerce.user.model.dto.UserEntityDto;
-
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -14,7 +14,12 @@ public class PortfolioProjectDto {
 
     private String Description;
 
-    private List<ProjectImageDto> projectImage;
+    private List<ProjectImageDto> projectImage= new ArrayList<>();
+
+
+    public List<ProjectImageDto> getProjectImage() {
+        return projectImage == null ? new ArrayList<>() : projectImage;
+    }
 
     @Override
     public String toString() {
@@ -83,9 +88,7 @@ public class PortfolioProjectDto {
         Description = description;
     }
 
-    public List<ProjectImageDto> getProjectImage() {
-        return projectImage;
-    }
+
 
     public void setProjectImage(List<ProjectImageDto> projectImage) {
         this.projectImage = projectImage;

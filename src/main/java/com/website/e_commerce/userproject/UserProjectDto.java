@@ -46,20 +46,6 @@ private List<BidDto> bidDtos;
 
 
 
-
-    @Override
-    public String toString() {
-        return "UserProjectDto{" +
-                "id=" + id +
-                ", userId=" + architectId +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", projectImage=" + projectImage +
-                ", budget=" + budget +
-                ", deadLine=" + deadLine +
-                '}';
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -145,7 +131,46 @@ private List<BidDto> bidDtos;
     }
 
 
-    public UserProjectDto(Long id, Long architectId, String title, String description, List<ProjectImageDto> projectImage, BigDecimal budget, LocalDate deadLine, String user) {
+    private String status; // New attribute
+
+    private int publishedSince; // New attribute
+
+    public enum Status {
+        CANCELED, COMPLETED
+    }
+
+    // Getters and setters
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public int getPublishedSince() {
+        return publishedSince;
+    }
+
+    public void setPublishedSince(int publishedSince) {
+        this.publishedSince = publishedSince;
+    }
+
+    @Override
+    public String toString() {
+        return "UserProject{" +
+                "id=" + id +
+                ", architect=" + architectId +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", projectImage=" + projectImage +
+                ", budget=" + budget +
+                ", deadLine=" + deadLine +
+                ", status=" + status +
+                ", publishedSince=" + publishedSince +
+                '}';
+    }
+    public UserProjectDto(Long id, Long architectId, String title, String description, List<ProjectImageDto> projectImage, BigDecimal budget, LocalDate deadLine, String userName, String status, int publishedSince) {
         this.id = id;
         this.architectId = architectId;
         this.title = title;
@@ -153,9 +178,10 @@ private List<BidDto> bidDtos;
         this.projectImage = projectImage;
         this.budget = budget;
         this.deadLine = deadLine;
-        this.userName = user;
+        this.userName = userName;
+        this.status = status;
+        this.publishedSince = publishedSince;
     }
-
     public UserProjectDto() {
     }
 }

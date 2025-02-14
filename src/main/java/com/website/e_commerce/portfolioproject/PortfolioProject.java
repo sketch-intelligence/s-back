@@ -3,7 +3,7 @@ package com.website.e_commerce.portfolioproject;
 import com.website.e_commerce.portfolioproject.image.ProjectImage;
 import com.website.e_commerce.user.model.entity.UserEntity;
 import jakarta.persistence.*;
-
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -13,16 +13,30 @@ public class PortfolioProject {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "project_id", nullable = false)
     private Long id;
+
+
     @ManyToOne
     @JoinColumn(name = "architect_id")
     private UserEntity architect;
+
     private String title;
-
     private String Description;
-    @OneToMany(mappedBy = "portfolioProject")
-    private List<ProjectImage> projectImage;
 
+    @OneToMany(mappedBy = "portfolioProject", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProjectImage> projectImage = new ArrayList<>(); // Initialize as empty list
 
+    // Constructors
+    public PortfolioProject() {
+        this.projectImage = new ArrayList<>(); // Ensure it's never null
+    }
+
+    public PortfolioProject(Long id, UserEntity architect, String title, String description, List<ProjectImage> projectImage) {
+        this.id = id;
+        this.architect = architect;
+        this.title = title;
+        this.Description = description;
+        this.projectImage = (projectImage != null) ? projectImage : new ArrayList<>(); // Prevent null assignment
+    }
     public Long getId() {
         return id;
     }
@@ -98,14 +112,7 @@ public class PortfolioProject {
         this.projectImage = projectImage;
     }
 
-    public PortfolioProject(Long id, UserEntity architect, String title, String description, List<ProjectImage> projectImage) {
-        this.id = id;
-        this.architect = architect;
-        this.title = title;
-        Description = description;
-        this.projectImage = projectImage;
-    }
 
-    public PortfolioProject() {
-    }
+
+
 }

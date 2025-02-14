@@ -22,6 +22,35 @@ public class UserProject {
     @OneToMany
     private List<ProjectImage> projectImage;
 
+
+    private String status ; // Default value
+
+
+    @Column(name = "published_since", nullable = false)
+    private Integer publishedSince = 0;
+
+
+    public enum Status {
+        CANCELED,
+        COMPLETED
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public Integer getPublishedSince() {
+        return publishedSince;
+    }
+
+    public void setPublishedSince(Integer publishedSince) {
+        this.publishedSince = publishedSince;
+    }
+
     @OneToMany(mappedBy = "userProject", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Bid> bids;
 
@@ -136,7 +165,7 @@ public class UserProject {
     public UserProject() {
     }
 
-    public UserProject(Long id, UserEntity architect, String title, String description, List<ProjectImage> projectImage, BigDecimal budget, LocalDate deadLine) {
+    public UserProject(Long id, UserEntity architect, String title, String description, List<ProjectImage> projectImage, BigDecimal budget, LocalDate deadLine, String status, Integer publishedSince) {
         this.id = id;
         this.architect = architect;
         this.title = title;
@@ -144,6 +173,8 @@ public class UserProject {
         this.projectImage = projectImage;
         this.budget = budget;
         this.deadLine = deadLine;
+        this.status = status;
+        this.publishedSince = publishedSince;
     }
 
     public Long getId() {

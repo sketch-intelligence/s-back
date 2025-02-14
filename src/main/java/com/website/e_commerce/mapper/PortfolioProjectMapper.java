@@ -11,11 +11,14 @@ import java.util.List;
 public interface PortfolioProjectMapper {
     PortfolioProjectMapper M = Mappers.getMapper(PortfolioProjectMapper.class);
 
+    @Mapping(target = "id", ignore = true) // Ensure ID is not mapped
     PortfolioProject toEntity(PortfolioProjectDto portfolioProjectDto);
 
     @AfterMapping
     default void linkProjectImage(@MappingTarget PortfolioProject portfolioProject) {
-        portfolioProject.getProjectImage().forEach(projectImage -> projectImage.setPortfolioProject(portfolioProject));
+        if (portfolioProject.getProjectImage() != null) { // Prevent null exception
+            portfolioProject.getProjectImage().forEach(projectImage -> projectImage.setPortfolioProject(portfolioProject));
+        }
     }
 
     List<PortfolioProject> toEntity(List<PortfolioProjectDto> portfolioProjectDto);
@@ -24,5 +27,6 @@ public interface PortfolioProjectMapper {
 
     List<PortfolioProjectDto> toDto(List<PortfolioProject> portfolioProject);
 
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)PortfolioProject partialUpdate(PortfolioProjectDto portfolioProjectDto, @MappingTarget PortfolioProject portfolioProject);
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    PortfolioProject partialUpdate(PortfolioProjectDto portfolioProjectDto, @MappingTarget PortfolioProject portfolioProject);
 }

@@ -11,13 +11,15 @@ public interface UserProjectMapper {
 
     @Mapping(target = "architect.id", source = "architectId")
     @Mapping(target = "bids", source = "bidDtos")
+    @Mapping(target = "status", source = "status") // 🔥 Add this line
     UserProject toEntity(UserProjectDto userProjectDto);
 
     List<UserProject> toEntity(List<UserProjectDto> userProjectDto);
 
     @Mapping(target = "architectId", source = "architect.id")
-    @Mapping(target = "userName", source = "architect.name") // Explicitly map the userName
+    @Mapping(target = "userName", source = "architect.name")
     @Mapping(target = "bidDtos", source = "bids")
+    @Mapping(target = "status", source = "status") // 🔥 Add this line
     UserProjectDto toDto(UserProject userProject);
 
     List<UserProjectDto> toDto(List<UserProject> userProject);
