@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import java.util.Map;
 import java.util.List;
 
 @RestController
@@ -27,6 +27,17 @@ public class UserProjectController {
                     .body(new ApiResponse(e.getMessage(), null));
         }
     }
+
+    @PostMapping("/{projectId}/bids/{bidId}/accept")
+    public ResponseEntity<ApiResponse> acceptBid(
+            @PathVariable Long projectId,
+            @PathVariable Long bidId,
+            @RequestParam Long userId  // Ensure this is included
+    ) {
+        userProjectService.acceptBid(projectId, bidId, userId);
+        return ResponseEntity.ok(new ApiResponse("Bid accepted successfully. Project is now closed.", null));
+    }
+
 
     @GetMapping
     public ResponseEntity<ApiResponse> getAllUserProjects() {

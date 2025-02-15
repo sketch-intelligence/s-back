@@ -5,7 +5,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.util.ArrayList;
 import java.util.List;
-
+import com.website.e_commerce.user.model.entity.UserEntity;
 import java.util.Objects;
 
 public class UserEntityDto {
@@ -16,7 +16,7 @@ public class UserEntityDto {
     private String imageUrl;
     private List<Long> followers;  // List of follower user IDs
     private List<Long> following;
-
+    private String role;
 
     @Override
     public String toString() {
@@ -62,13 +62,29 @@ public class UserEntityDto {
 
     public UserEntityDto() {
     }
+    public UserEntityDto(UserEntity user) {
+        this.id = user.getId();
+        this.name = user.getName();
+        this.imageUrl = user.getImageUrl();
+        this.followers = new ArrayList<>();  // Default to empty list
+        this.following = new ArrayList<>();  // Default to empty list
 
-    public UserEntityDto(Long id, String username, String profilePictureUrl, List<Long> followers, List<Long> following) {
+        this.role = (user.getRole() != null) ? user.getRole().toString() : "USER";
+    }
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+    public UserEntityDto(Long id, String username, String profilePictureUrl, List<Long> followers, List<Long> following, String role) {
         this.id = id;
         this.name = username;
         this.imageUrl = profilePictureUrl;
         this.followers = followers;
         this.following = following;
+        this.role = role;
     }
 
     // ✅ New Constructor (Fix for PostService)

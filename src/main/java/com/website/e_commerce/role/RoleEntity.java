@@ -26,6 +26,7 @@ public class RoleEntity {
         this.name = name;
     }
 
+
     public Integer getId() {
         return id;
     }

@@ -11,7 +11,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-
+import com.website.e_commerce.bid.Bid;
+import com.website.e_commerce.bid.BidRepository;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -30,6 +31,35 @@ public class UserProjectServiceImpl implements IUserProjectService {
 
     @Autowired
     private UserProjectMapper userProjectMapper;
+
+    @Autowired
+    private  BidRepository bidRepository;
+
+    public UserProject acceptBid(Long projectId, Long bidId, Long userId) {
+        // Fetch project
+        UserProject project = userProjectRepository.findById(projectId)
+                .orElseThrow(() -> new RuntimeException("Project not found"));
+
+        // Ensure the user is the owner of the project
+        if (!project.getArchitect().getId().equals(userId)) {
+            throw new RuntimeException("You are not allowed to accept a bid for this project.");
+        }
+
+        // Fetch bid
+        Bid acceptedBid = bidRepository.findById(bidId)
+                .orElseThrow(() -> new RuntimeException("Bid not found"));
+
+        // Ensure the bid belongs to the project
+        if (!project.getBids().contains(acceptedBid)) {
+            throw new RuntimeException("This bid does not belong to the given project.");
+        }
+
+        // Accept the bid
+        project.setStatus("closed");
+        userProjectRepository.save(project);
+
+        return project;
+    }
 
     @Override
     @PreAuthorize("hasRole('ROLE_USER')")

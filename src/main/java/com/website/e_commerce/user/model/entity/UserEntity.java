@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.website.e_commerce.annotation.Password;
 import com.website.e_commerce.profilepicture.ProfileImage;
 import com.website.e_commerce.role.RoleEntity;
+import com.website.e_commerce.user.RoleEnum;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -105,6 +106,19 @@ public class UserEntity implements UserDetails {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private ProfileImage profileImage;
 
+    @Column(name = "role", nullable = false)
+    @Enumerated(EnumType.STRING) // Store as a string in the database
+    private RoleEnum role;
+
+    // ✅ Add getter for role
+    public RoleEnum getRole() {
+        return role;
+    }
+
+    public void setRole(RoleEnum role) {
+        this.role = role;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles.stream()
@@ -145,13 +159,14 @@ public class UserEntity implements UserDetails {
     public UserEntity() {
     }
 
-    public UserEntity(Long id, String name, String email, String password, Set<RoleEntity> roles,ProfileImage pi) {
+    public UserEntity(Long id, String name, String email, String password, Set<RoleEntity> roles,ProfileImage pi, RoleEnum role) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
         this.roles = roles;
         this.profileImage=pi;
+        this.role = role;
     }
 
     public Long getId() {

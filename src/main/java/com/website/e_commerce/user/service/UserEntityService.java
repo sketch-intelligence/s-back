@@ -77,8 +77,16 @@ public class UserEntityService {
                 .map(f -> f.getFollowing().getId())
                 .collect(Collectors.toList());
 
-        return new UserEntityDto(user.getId(), user.getUsername(), user.getImageUrl(), followers, following);
+        // Extract role from the roles set (assuming there's only one main role)
+        String role = user.getRoles().stream()
+                .map(roleEntity -> roleEntity.getName().name()) // Assuming RoleEntity has getName() method
+                .findFirst()
+                .orElse("user"); // Default to "user" if no role is found
+
+        return new UserEntityDto(user.getId(), user.getUsername(), user.getImageUrl(), followers, following, role);
     }
+
+
 
 
 }

@@ -8,4 +8,6 @@ public interface IUserProjectService {
     List<UserProjectDto> getAllUserProjects();
     UserProjectDto updateUserProject(Long id, UserProjectDto userProjectDto);
     void deleteUserProject(Long id);
+
+    UserProject acceptBid(Long projectId, Long bidId, Long userId);
 }
